@@ -13,6 +13,8 @@ public class ParseApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+        ParseObject.registerSubclass(Post.class);
+
         String appId = "3qUZMs2AZ1c6M3dl6aU7rvppbN4CjBZJxqVC9uxg";
         String clientKey = "5EgmP3UW2DEXUB3Ja6sIftlA0dgXnWLq8tRauohK";
 
