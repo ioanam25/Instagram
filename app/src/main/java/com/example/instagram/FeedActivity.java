@@ -27,6 +27,7 @@ public class FeedActivity extends AppCompatActivity {
     protected List<Post> allPosts;
 
     private SwipeRefreshLayout swipeContainer;
+    private EndlessRecyclerViewScrollListener scrollListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +44,7 @@ public class FeedActivity extends AppCompatActivity {
                 // Make sure you call swipeContainer.setRefreshing(false)
                 // once the network request has completed successfully.
                adapter.clear();
-               queryPosts();
+               queryPosts(null);
             }
         });
         // Configure the refreshing colors
@@ -61,12 +62,28 @@ public class FeedActivity extends AppCompatActivity {
         // set the adapter on the recycler view
         rvPosts.setAdapter(adapter);
         // set the layout manager on the recycler view
-        rvPosts.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager llm = new LinearLayoutManager(this);
+        rvPosts.setLayoutManager(llm);
         // query posts from Parstagram
-        queryPosts();
+        queryPosts(null);
+
+        scrollListener = new EndlessRecyclerViewScrollListener(llm) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                // Triggered only when new data needs to be appended to the list
+                // Add whatever code is needed to append new items to the bottom of the list
+                loadNextDataFromApi();
+            }
+        };
+        // Adds the scroll listener to RecyclerView
+        rvPosts.addOnScrollListener(scrollListener);
     }
 
-    private void queryPosts() {
+    public void loadNextDataFromApi() {
+        queryPosts(allPosts.get(allPosts.size()-1).getObjectId());
+    }
+
+    private void queryPosts(String maxId) {
         // specify what type of data we want to query - Post.class
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         // include data referred by user key
