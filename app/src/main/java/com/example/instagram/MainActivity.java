@@ -2,6 +2,7 @@ package com.example.instagram;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.FileProvider;
 
 import android.content.Intent;
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btnFeed;
     private File photoFile;
     public String photoFileName = "photo.jpg";
+    public ConstraintLayout constraintLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         ivPostImage = findViewById(R.id.ivPostImage);
         btnSubmit = findViewById(R.id.btnSubmit);
         btnFeed = findViewById(R.id.btnFeed);
+        constraintLayout = findViewById(R.id.cl);
 
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
         // queryPosts();
     }
 
