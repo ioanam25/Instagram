@@ -1,12 +1,20 @@
 package com.example.instagram;
 
+import android.util.Log;
+
+import com.parse.FindCallback;
 import com.parse.ParseClassName;
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
+
+import java.util.List;
 
 @ParseClassName("Post")
 public class Post extends ParseObject {
+    public static final String TAG = "PostCLass";
 
     public static final String KEY_DESCRIPTION = "description";
     public static final String KEY_IMAGE = "image";
@@ -35,4 +43,6 @@ public class Post extends ParseObject {
     public void setUser(ParseUser user) {
         put(KEY_USER, user);
     }
+
 }
+
