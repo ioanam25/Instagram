@@ -5,10 +5,13 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.parse.ParseFile;
 
 import java.util.Date;
@@ -21,6 +24,7 @@ public class PostDetailsActivity extends AppCompatActivity {
     TextView tvDetailDescription;
     TextView tvDetailTimestamp;
     ConstraintLayout constraintLayout;
+    FloatingActionButton fabComment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +36,7 @@ public class PostDetailsActivity extends AppCompatActivity {
         tvDetailDescription = findViewById(R.id.tvDetailDescription);
         tvDetailTimestamp = findViewById(R.id.tvDetailTimestamp);
         constraintLayout = findViewById(R.id.cl);
+        fabComment = findViewById(R.id.fabComment);
 
         Intent intent = getIntent();
         Post post = intent.getParcelableExtra("post");
@@ -46,5 +51,14 @@ public class PostDetailsActivity extends AppCompatActivity {
         if (image != null) {
             Glide.with(PostDetailsActivity.this).load(image.getUrl()).into(ivDetailImage);
         }
+
+        fabComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+
     }
 }

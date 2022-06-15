@@ -1,41 +1,57 @@
 package com.example.instagram;
 
-import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 
-import org.json.JSONArray;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class FeedActivity extends AppCompatActivity {
+public class FeedFragment extends Fragment {
 
-    public static final String TAG = "FeedActivity";
+    public static final String TAG = "FeedFragment";
 
     private RecyclerView rvPosts;
 
-    protected PostsAdapter adapter;
-    protected List<Post> allPosts;
+    public PostsAdapter adapter;
+    public List<Post> allPosts;
 
     private SwipeRefreshLayout swipeContainer;
     private EndlessRecyclerViewScrollListener scrollListener;
 
+
+    public FeedFragment() {
+        // Required empty public constructor
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_feed);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_feed, container, false);
+    }
+
+    // This event is triggered soon after onCreateView().
+    // Any view setup should occur here.  E.g., view lookups and attaching view listeners.
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        rvPosts = view.findViewById(R.id.rvPosts);
 
         // Lookup the swipe container view
-        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
         // Setup refresh listener which triggers new data loading
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -43,8 +59,8 @@ public class FeedActivity extends AppCompatActivity {
                 // Your code to refresh the list here.
                 // Make sure you call swipeContainer.setRefreshing(false)
                 // once the network request has completed successfully.
-               adapter.clear();
-               queryPosts(null);
+                adapter.clear();
+                queryPosts(null);
             }
         });
         // Configure the refreshing colors
@@ -52,17 +68,17 @@ public class FeedActivity extends AppCompatActivity {
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
-        
-        rvPosts = findViewById(R.id.rvPosts);
+
+        rvPosts = view.findViewById(R.id.rvPosts);
 
         // initialize the array that will hold posts and create a PostsAdapter
         allPosts = new ArrayList<>();
-        adapter = new PostsAdapter(this, allPosts);
+        adapter = new PostsAdapter(getContext(), allPosts);
 
         // set the adapter on the recycler view
         rvPosts.setAdapter(adapter);
         // set the layout manager on the recycler view
-        LinearLayoutManager llm = new LinearLayoutManager(this);
+        LinearLayoutManager llm = new LinearLayoutManager(getContext());
         rvPosts.setLayoutManager(llm);
         // query posts from Parstagram
         queryPosts(null);
@@ -83,7 +99,7 @@ public class FeedActivity extends AppCompatActivity {
         queryPosts(allPosts.get(allPosts.size()-1).getObjectId());
     }
 
-    private void queryPosts(String maxId) {
+    protected void queryPosts(String maxId) {
         // specify what type of data we want to query - Post.class
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         // include data referred by user key
@@ -114,5 +130,4 @@ public class FeedActivity extends AppCompatActivity {
             }
         });
     }
-
 }
