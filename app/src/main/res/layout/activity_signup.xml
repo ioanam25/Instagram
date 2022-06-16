@@ -9,7 +9,7 @@
     tools:context=".LoginActivity">
 
     <EditText
-        android:id="@+id/etUsername"
+        android:id="@+id/etUsernameSignup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -18,7 +18,7 @@
         tools:ignore="TouchTargetSizeCheck" />
 
     <EditText
-        android:id="@+id/etPassword"
+        android:id="@+id/etPasswordSignup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -28,17 +28,10 @@
         tools:ignore="TouchTargetSizeCheck" />
 
     <Button
-        android:id="@+id/btnLogin"
+        android:id="@+id/btnSignup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="@string/login" />
-
-    <Button
-        android:id="@+id/btnNewSignup"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="new signup" />
+        android:text="sign up" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

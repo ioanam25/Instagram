@@ -3,11 +3,14 @@ package com.example.instagram;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridLayout;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -19,6 +22,10 @@ import java.util.List;
 public class ProfileFragment extends FeedFragment {
 
     public static final String TAG = "ProfileFragment";
+
+//    public ProfileFragment() {
+//        rvPosts.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+//    }
 
     protected void queryPosts() {
         super.queryPosts(null);
