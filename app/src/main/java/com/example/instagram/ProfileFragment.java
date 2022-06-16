@@ -23,19 +23,17 @@ public class ProfileFragment extends FeedFragment {
 
     public static final String TAG = "ProfileFragment";
 
-//    public ProfileFragment() {
-//        rvPosts.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-//    }
-
-    protected void queryPosts() {
-        super.queryPosts(null);
+    @Override
+    protected void queryPosts(String maxId) {
+        Log.e(TAG, "query happens");
         // specify what type of data we want to query - Post.class
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         // include data referred by user key
         query.include(Post.KEY_USER);
         query.whereEqualTo(Post.KEY_USER, ParseUser.getCurrentUser());
+        Log.e("current user", ParseUser.getCurrentUser().getUsername());
         // limit query to latest 20 items
-        query.setLimit(3);
+        query.setLimit(20);
         // order posts by creation date (newest first)
         query.addDescendingOrder("createdAt");
         // start an asynchronous call for posts
