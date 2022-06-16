@@ -10,6 +10,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -20,6 +21,9 @@ public class Post extends ParseObject {
     public static final String KEY_DESCRIPTION = "description";
     public static final String KEY_IMAGE = "image";
     public static final String KEY_USER = "user";
+    public static final String KEY_LIKED_BY = "likedBy";
+    public boolean isLiked;
+    public int likeCount;
 
     public String getDescription() {
         return getString(KEY_DESCRIPTION);
@@ -43,6 +47,23 @@ public class Post extends ParseObject {
 
     public void setUser(ParseUser user) {
         put(KEY_USER, user);
+    }
+
+    public void setLikedBy(List<ParseUser> newLikeBy) {
+        put(KEY_LIKED_BY, newLikeBy);
+    }
+
+    public List<ParseUser> getLikedBy() {
+        List<ParseUser> likedBy = getList(KEY_LIKED_BY);
+        if (likedBy == null) {
+            return new ArrayList<>();
+        }
+        return likedBy;
+    }
+
+    public String getLikesCount() {
+        int likeCount = getLikedBy().size();
+        return (likeCount) + (likeCount == 1 ? " like" : " likes");
     }
 
     public static String calculateTimeAgo(Date createdAt) {

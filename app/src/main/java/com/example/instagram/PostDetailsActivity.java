@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,6 +20,7 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.Date;
 import java.util.List;
@@ -32,6 +34,8 @@ public class PostDetailsActivity extends AppCompatActivity {
     TextView tvDetailTimestamp;
     ConstraintLayout constraintLayout;
     FloatingActionButton fabComment;
+    TextView tvLikeCount;
+    ImageButton ibIsLiked;
 
     RecyclerView rvComments;
     CommentsAdapter adapter;
@@ -48,6 +52,9 @@ public class PostDetailsActivity extends AppCompatActivity {
         constraintLayout = findViewById(R.id.cl);
         fabComment = findViewById(R.id.fabComment);
         rvComments = findViewById(R.id.rvComments);
+        tvLikeCount = findViewById(R.id.tvLikeCount);
+        ibIsLiked = findViewById(R.id.ibIsLiked);
+
         adapter = new CommentsAdapter();
         rvComments.setLayoutManager(new LinearLayoutManager(this));
         rvComments.setAdapter(adapter);
@@ -64,6 +71,12 @@ public class PostDetailsActivity extends AppCompatActivity {
         if (image != null) {
             Glide.with(PostDetailsActivity.this).load(image.getUrl()).into(ivDetailImage);
         }
+        if (post.getLikedBy().contains(ParseUser.getCurrentUser())) {
+            ibIsLiked.setBackgroundResource(R.drawable.ufi_heart_active);
+        }
+        else {
+            ibIsLiked.setBackgroundResource(R.drawable.ufi_heart);
+        }
 
         fabComment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,6 +86,27 @@ public class PostDetailsActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        ibIsLiked.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<ParseUser> likedBy = post.getLikedBy();
+                ParseUser currentUser = ParseUser.getCurrentUser();
+                if (likedBy.contains(currentUser)) {
+                    likedBy.remove(currentUser);
+                    ibIsLiked.setBackgroundResource(R.drawable.ufi_heart);
+                }
+                else {
+                    ibIsLiked.setBackgroundResource(R.drawable.ufi_heart_active);
+                    likedBy.add(currentUser);
+                }
+
+                tvLikeCount.setText( String.valueOf( post.getLikedBy().size()) );
+                post.setLikedBy(likedBy);
+                post.saveInBackground(); // uploads new value back to parse
+            }
+        });
+
 
         ParseQuery<Comment> query = ParseQuery.getQuery("Comment");
         query.whereEqualTo(Comment.KEY_POST, post);
@@ -89,5 +123,6 @@ public class PostDetailsActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
             }
         });
+
     }
 }
