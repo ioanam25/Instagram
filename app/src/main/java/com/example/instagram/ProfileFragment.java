@@ -2,6 +2,8 @@ package com.example.instagram;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
@@ -17,11 +19,28 @@ import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProfileFragment extends FeedFragment {
 
     public static final String TAG = "ProfileFragment";
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setSwipeContainer(view);
+
+        rvPosts = view.findViewById(R.id.rvPosts);
+        int columns = 3;
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), columns, GridLayoutManager.VERTICAL, false);
+        rvPosts.setLayoutManager(gridLayoutManager);
+        allPosts = new ArrayList<>();
+        adapter = new PostsAdapter(getContext(), allPosts);
+        rvPosts.setAdapter(adapter);
+
+        queryPosts(null);
+    }
 
     @Override
     protected void queryPosts(String maxId) {
