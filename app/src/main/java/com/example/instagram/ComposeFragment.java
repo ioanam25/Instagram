@@ -238,6 +238,5 @@ public class ComposeFragment extends Fragment {
         ParseUser currentUser = ParseUser.getCurrentUser(); // this will now be null
         Intent i = new Intent(getContext(), LoginActivity.class);
         startActivity(i);
-        // TODO check why not working: finish();
     }
 }
